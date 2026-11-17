@@ -5,7 +5,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>CompositeExample.Program</StartupObject>
+    <StartupObject>DecoratorTree.Program</StartupObject>
   </PropertyGroup>
 
 </Project>

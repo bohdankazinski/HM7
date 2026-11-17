@@ -7,62 +7,67 @@ namespace DecoratorTree
         public abstract string GetDescription();
         public abstract bool CanShine();
 
-        public void Shine()
+        public virtual void Shine()
         {
             if (CanShine())
-                Console.WriteLine("Ялинка світиться!");
+                Console.WriteLine("Ялинка яскраво світиться!");
             else
-                Console.WriteLine("Ялинка не світиться.");
+                Console.WriteLine("Ялинка поки що не світиться.");
         }
     }
 
     class FirTree : Tree
     {
-        public override string GetDescription() { return "Ялинка"; }
+        public override string GetDescription() { return "Новорічна ялинка"; }
         public override bool CanShine() { return false; }
     }
 
     abstract class TreeDecorator : Tree
     {
-        protected Tree tree;
-        public TreeDecorator(Tree tree) { this.tree = tree; }
+        protected Tree decoratedTree;
+        public TreeDecorator(Tree tree) { this.decoratedTree = tree; }
 
-        public override string GetDescription() { return tree.GetDescription(); }
-        public override bool CanShine() { return tree.CanShine(); }
+        public override string GetDescription() { return decoratedTree.GetDescription(); }
+        public override bool CanShine() { return decoratedTree.CanShine(); }
     }
 
     class OrnamentDecorator : TreeDecorator
     {
-        private string ornament; 
-        private int count;       
+        private string toyName;
+        private int amount;
 
-        public OrnamentDecorator(Tree tree, string ornament, int count) : base(tree)
+        public OrnamentDecorator(Tree tree, string toyName, int amount) : base(tree)
         {
-            this.ornament = ornament;
-            this.count = count;
+            this.toyName = toyName;
+            this.amount = amount;
         }
 
         public override string GetDescription()
         {
-            return base.GetDescription() + ", " + ornament + " x" + count;
+            return base.GetDescription() + ", " + toyName + " (" + amount + " шт.)";
         }
     }
 
     class GarlandDecorator : TreeDecorator
     {
-        private string color; 
+        private string garlandColor;
 
-        public GarlandDecorator(Tree tree, string color) : base(tree)
+        public GarlandDecorator(Tree tree, string garlandColor) : base(tree)
         {
-            this.color = color;
+            this.garlandColor = garlandColor;
         }
 
         public override string GetDescription()
         {
-            return base.GetDescription() + ", гірлянда (" + color + ")";
+            return base.GetDescription() + ", гірлянда [" + garlandColor + "]";
         }
 
         public override bool CanShine() { return true; }
+
+        public override void Shine()
+        {
+            Console.WriteLine("Ялинка світиться! Колір вогників: " + garlandColor + ".");
+        }
     }
 
     class Program
@@ -76,15 +81,16 @@ namespace DecoratorTree
             tree.Shine();
             Console.WriteLine();
 
-            tree = new OrnamentDecorator(tree, "червоні кульки", 10);
-            tree = new OrnamentDecorator(tree, "зірка", 1);
+            tree = new OrnamentDecorator(tree, "золоті кульки", 12);
+            tree = new OrnamentDecorator(tree, "сріблястий дощик", 3);
+            tree = new OrnamentDecorator(tree, "янгол на верхівку", 1);
             Console.WriteLine(tree.GetDescription());
-            tree.Shine();    
+            tree.Shine();
             Console.WriteLine();
 
-            tree = new GarlandDecorator(tree, "різнокольорова");
+            tree = new GarlandDecorator(tree, "зелений");
             Console.WriteLine(tree.GetDescription());
-            tree.Shine(); 
+            tree.Shine();
 
             Console.ReadKey();
         }
